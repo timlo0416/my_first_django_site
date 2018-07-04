@@ -1,4 +1,9 @@
 <html>
   <p>Hello World!</p>
-
+  {% for post in posts %}
+  <div>
+    <p>{{post.title}}</p>
+    <p>{{ post.text|linebreaksbr }}</p>
+  </div>
+  {% endfor %}
 </html>
