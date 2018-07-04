@@ -1,0 +1,261 @@
+<!doctype html>
+<html>
+<meta charset="UTF-8">
+
+<head>
+  <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+  <style>
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+    }
+    svg {
+      background-color: rgba(20, 50, 20, 0.1);
+    }
+  </style>
+</head>
+
+<body>
+  <h1>My D3 Chart</h1>
+  <svg class="svg">
+    
+  </svg>
+  <script type="text/javascript">
+    var margin = 80;
+    var svg_width = 650;
+    var svg_height = 300;
+
+    var new_dataset = [{
+        "unit": "中區管理中心",
+        "used": 6,
+        "unused": 0,
+        "recevied": 6,
+        "total": 8
+      },
+      {
+        "unit": "北區管理中心",
+        "used": 7,
+        "unused": 0,
+        "recevied": 7,
+        "total": 9
+      },
+      {
+        "unit": "外部邀稿",
+        "used": 7,
+        "unused": 0,
+        "recevied": 7,
+        "total": 7
+      },
+      {
+        "unit": "企劃及科技管理科",
+        "used": 27,
+        "unused": 1,
+        "recevied": 28,
+        "total": 33
+      },
+      {
+        "unit": "南區管理中心",
+        "used": 4,
+        "unused": 1,
+        "recevied": 5,
+        "total": 5
+      },
+      {
+        "unit": "研究檢驗組",
+        "used": 12,
+        "unused": 0,
+        "recevied": 12,
+        "total": 17
+      },
+      {
+        "unit": "風險管理組",
+        "used": 23,
+        "unused": 1,
+        "recevied": 24,
+        "total": 29
+      },
+      {
+        "unit": "食品組",
+        "used": 23,
+        "unused": 1,
+        "recevied": 24,
+        "total": 29
+      },
+      {
+        "unit": "管制食品組(含製藥工廠)",
+        "used": 17,
+        "unused": 0,
+        "recevied": 17,
+        "total": 21
+      },
+      {
+        "unit": "醫療食材與化妝品組",
+        "used": 30,
+        "unused": 0,
+        "recevied": 30,
+        "total": 36
+      },
+      {
+        "unit": "藥品組",
+        "used": 6,
+        "unused": 0,
+        "recevied": 6,
+        "total": 8
+      }
+    ];
+
+    var x_scale = d3.scale.linear()
+      .domain([0, 50])
+      .range([0, 500]);
+
+    var y_scale = d3.scale.linear()
+      .domain([-1, new_dataset.length])
+      .range([0, svg_height]);
+
+    var y_axis = d3.svg.axis()
+      .scale(y_scale)
+      .orient("left")
+      .ticks(new_dataset.length)
+      .tickFormat(function(i) {
+        return (new_dataset[i]) ? new_dataset[i].unit : ''; // 這裡控制坐標軸的單位
+      });
+
+    var x_axis = d3.svg.axis()
+      .scale(x_scale)
+      .orient("bottom")
+      .ticks(12);
+
+    var svg = d3.select(".svg")
+      //.attr("width", margin)
+      .attr("width", svg_width + margin)
+      .attr("height", svg_height + margin * 2)
+      .attr("transform", "translate(" + margin + "," + margin + ")");
+
+    var tmp = new_dataset[2].total;
+
+    svg.selectAll("rect2")
+    .data(new_dataset)
+    .enter()
+    .append("rect")
+    .attr("x", 0)
+    .attr("y", function(d, i) {
+      return i * (svg_height / (new_dataset.length + 1)) + 1;
+    })
+    .attr("width", function(d,i){
+      return new_dataset[i].total * 10;
+    })
+    .attr("height", function(i) {
+      return (svg_height / (new_dataset.length + 1)) - 2;
+    })
+    .attr("transform", "translate(200, 115)")
+    .attr("opacity", 0.6)
+    .attr("fill", function(i) {
+      //return "#666666";
+      return "#666666";
+    })
+
+    svg.selectAll("rect2")
+      .data(new_dataset)
+      .enter()
+      .append("rect")
+      .attr("x", function(i) {
+        return 0;
+      })
+      .attr("y", function(d, i) {
+        return i * (svg_height / (new_dataset.length + 1)) + 2;
+      })
+      .attr("width", 0)
+      .attr("height", function(i) {
+        return (svg_height / (new_dataset.length + 1)) - 4;
+      })
+      //.attr("opacity", 0.6)
+      .attr("fill", function(i) {
+        //return "#666666";
+        return "#669966";
+      })
+      .attr("transform", "translate(200, 115)")
+      .transition()
+      .duration(1000)
+      .attr("width", function(d, i) {
+        return new_dataset[i].recevied * 10;
+      });
+
+
+
+    svg.selectAll("text")
+      .data(new_dataset)
+      .enter()
+      .append("text")
+      .text(0)
+      .attr("transform", "translate(200, 130)")
+      .attr("fill", "white")
+      .attr("x", 0)
+      .attr("y", function(d, i) {
+        return i * (svg_height / (new_dataset.length + 1)) + 2;
+      })
+      .transition()
+      .duration(1000)
+      .attr("x", function(d, i) {
+        var r = new_dataset[i].recevied * 10;
+        if (new_dataset[i].recevied/10 >= 1)
+          return r - 20;
+        else {
+          return r - 10;
+        }
+        //return new_dataset[i].recevied * 10 ;
+      })
+      .tween('number', function(d, i) {
+        var i = d3.interpolateRound(0, new_dataset[i].recevied);
+        return function(t) {
+          this.textContent = i(t);
+        };
+      });
+
+    svg.selectAll("text1")
+      .data(new_dataset)
+      .enter()
+      .append("text")
+      .text(function(d, i){
+        return new_dataset[i].total
+      })
+      .attr("transform", "translate(200, 130)")
+      .attr("fill", "#000")
+      .attr("x", function(d, i){
+        return new_dataset[i].total * 10;
+      })
+      .attr("y", function(d, i) {
+        return i * (svg_height / (new_dataset.length + 1)) + 2;
+      })
+
+    svg.append("g")
+      .call(y_axis)
+      .attr({
+        "class": "y axis",
+        "transform": "translate( 200, 100)",
+        "opacity": 0.6,
+        "fill": "none",
+        "stroke": "#000"
+      }).selectAll("text")
+      .attr({
+        "fill": "#000",
+        "stroke": "none"
+      });
+
+    svg.append("g")
+      .call(x_axis)
+      .attr({
+        "class": "x axis",
+        "transform": "translate(200," + (svg_height+100) + ")",
+        "opacity": 0.6,
+        "fill": "none",
+        "stroke": "#000"
+      }).selectAll("text")
+      .attr({
+        "fill": "#000",
+        "stroke": "none"
+      });
+  </script>
+</body>
+
+</html>
