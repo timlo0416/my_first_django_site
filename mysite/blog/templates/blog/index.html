@@ -1,0 +1,12 @@
+{% extends 'blog/base.html' %}
+{% block content %}
+  <div>
+    <h1>Welcome to my first Django site</h1>
+    {% if request.user.is_authenticated %}
+      <p>{{request.user}} , you are already logged in.</p>
+    {% else %}
+      <p>Log in first <a href="/accounts/login/">login</a></p>
+      <p>Don't have a account? Join us <a href="{% url 'registration_register' %}">Register</a></p>
+    {% endif %}
+  </div>
+{% endblock %}

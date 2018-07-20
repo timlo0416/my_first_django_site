@@ -1,18 +1,44 @@
+{% load staticfiles %}
+<!doctype html>
 <html>
   <head>
+    <title>My first Django site</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style type="text/css">
+      body { background: rgba(200,200,200,0.8) !important; }
+      nav { background: rgba(256,256,256,1) !important; }
+      .post_title { text-decoration: none }
+    </style>
   </head>
   <body>
-    <nav class="navbar navbar-inverse navbar-static-top">
+    <nav class="navbar navbar">
       <div>
-        <h1><a href="/">My first Django website</a></h1>
+        <a class="navbar-brand" href="/">My first Django website</a>
       </div>
+      <ul class="nav navbar-nav">
+        {% if user.is_authenticated %}
+        <li>
+          <a href="{% url 'post_new' %}" class="top-menu">New Post</a>
+        </li>
+        <li>
+          <a href="{% url 'logout' %}" class="top-menu">Logout</a>
+        </li>
+        {% else %}
+        <li>
+          <a href="/accounts/login/" class="top-menu">Login</a>
+        </li>
+        <li>
+          <a href="{% url 'registration_register' %}" class="top-menu">Register</a>
+        </li>
+        {% endif %}
+
+      </ul>
     </nav>
-    <div class="alert alert-primary" role="alert">
-      A simple light alert—check it out!
-    </div>
+
     <div class="content container">
       <div class="row">
         <div class="col-md-8">
@@ -21,9 +47,5 @@
         </div>
       </div>
     </div>
-    
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
   </body>
 </html>

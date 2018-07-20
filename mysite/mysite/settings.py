@@ -24,13 +24,23 @@ SECRET_KEY = 'evb%&7%q0g6zudj@405ew*72k(s^um$9a^t8e7^jfxzr73igd&'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
+LOGIN_REDIRECT_URL = '/index/'
 ALLOWED_HOSTS = []
+SITE_ID = 1
+#EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+DEFAULT_FROM_EMAIL = 'timlo0416@gmail.com'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'timlo0416@gmail.com'
+EMAIL_HOST_PASSWORD = 'lerjyalbrrjlviod'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    'django.contrib.sites',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -113,6 +123,8 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = False
+
+ACCOUNT_ACTIVATION_DAYS = 7 # One-week activation window; you may, of course, use a different value.
 
 
 # Static files (CSS, JavaScript, Images)
